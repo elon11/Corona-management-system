@@ -1,3 +1,8 @@
+/*
+ * elon ifrah 207229931
+ * yosi iluz 208510248
+ * A class describing one of the types of virus originating in UK
+ */
 package Virus;
 import Population.Convalescent;
 import Population.Healthy;
@@ -5,22 +10,33 @@ import Population.Person;
 import Population.Sick;
 import Population.Vaccinated;
 import Simulation.Clock;
-
 import java.lang.Math;
+
+
 
 public class BritishVariant implements IVirus {
 	
+	/*
+	 * @param p - A method that calculates the probability that the transferred person will be infected.
+	 */
 	public double ContagionProbability(Person p) {
 		return 0.7*p.ContagionProbability();
 	}
+	
+	/*
+	 * @param p - An help method that accepts a patient and returns the probability of death from his virus
+	 */
 	public double p_to_death(Sick p) {
 		if(p.getAge()<=18)
 			return 0.01;
 		return 0.1;
 		
-	}
+	} 
 	
-	
+	/*
+	 * @param p1 and p2 - A method that accepts 2 people and results in pasting the other with the help of a formula and distance from the first person
+	 */
+	@Override
 	public boolean tryToContagion(Person p1, Person p2) {
 		double distance, min1;
 		if(p2 instanceof Healthy || p2 instanceof Vaccinated || p2 instanceof Convalescent)
@@ -40,6 +56,9 @@ public class BritishVariant implements IVirus {
 		return false;
 	}
 	
+	/*
+	 * @param p - A method that calculates the probability that the person being transferred will die from the disease
+	 */
 	public boolean tryToKill(Sick p) {
 		double x = p.getVirus().p_to_death(p);
 		double max1 = Math.max(0, x - 0.01*x* Math.pow(Clock.now() - p.getContagiousTime()-15, 2));
@@ -48,8 +67,15 @@ public class BritishVariant implements IVirus {
 	    	return true;
 	    return false;
 	}
+	
 	public String toString() {
 		return "BritishVariant";
+	}
+	
+	public boolean equals(Object o) {
+		if (!(o instanceof BritishVariant))
+		   return false;
+		return true;
 	}
 
 }
