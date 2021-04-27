@@ -1,38 +1,42 @@
 /*
  * elon ifrah 207229931
  * yosi iluz 208510248
- * A class describing one of the types of virus originating in UK
+ * A class describing one of the types of virus originating in China
  */
 package Virus;
-import Population.Convalescent;
-import Population.Healthy;
-import Population.Person;
-import Population.Sick;
-import Population.Vaccinated;
+import Population.*;
 import Simulation.Clock;
 import java.lang.Math;
 
 
-
-public class BritishVariant implements IVirus {
+public class ChineseVariant implements IVirus {
 	
 	/*
 	 * @param p - A method that calculates the probability that the transferred person will be infected.
 	 */
 	public double ContagionProbability(Person p) {
-		return 0.7*p.ContagionProbability();
+		double percent;
+		if(p.getAge()<=18)
+			percent =  0.2;
+		else if(p.getAge()>55)
+			percent = 0.7;
+		else
+			percent = 0.5;
+		return percent*p.ContagionProbability();
 	}
 	
 	/*
 	 * @param p - An help method that accepts a patient and returns the probability of death from his virus
 	 */
 	public double p_to_death(Sick p) {
-		if(p.getAge()<=18)
-			return 0.01;
-		return 0.1;
+		if(p.getAge()<18)
+			return 0.001;
+		if(p.getAge()>55)
+			return 0.1;
+		return 0.05;
 		
-	} 
-	
+	}
+	 
 	/*
 	 * @param p1 and p2 - A method that accepts 2 people and results in pasting the other with the help of a formula and distance from the first person
 	 */
@@ -66,16 +70,15 @@ public class BritishVariant implements IVirus {
 	    if(max1<=r)
 	    	return true;
 	    return false;
-	}
 	
+	}
 	public String toString() {
-		return "BritishVariant";
+		return "ChineseVariant";
 	}
 	
 	public boolean equals(Object o) {
-		if (!(o instanceof BritishVariant))
+		if (!(o instanceof ChineseVariant))
 		   return false;
 		return true;
 	}
-
 }
