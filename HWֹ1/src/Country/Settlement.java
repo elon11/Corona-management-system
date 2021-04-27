@@ -1,3 +1,8 @@
+/*
+ * elon ifrah 207229931
+ * yosi iluz 208510248
+ * A class that describes a place on a map
+ */
 package Country;
 
 import java.util.*;
@@ -8,30 +13,69 @@ import Location.Point;
 
 
 
-public class Settlement {
+public abstract class Settlement {
 	protected String name;
 	protected Location location;
-	List<Person> listp;
-	RamzorColor color;
+	protected List<Person> listhealthy;
+	protected List<Person> listsick;
+	protected RamzorColor color;
+	static public int max_people;
+	protected int vaccine_doses;
+	protected Settlement [] neighbors;
 	public Settlement() {
 
 	
 	}
-	public Settlement(String name,Location location,RamzorColor color, List<Person> listp) {
+	public Settlement(String name,Location location,RamzorColor color, List<Person> healthy,List<Person> sick,int max_people,int vaccine_doses,Settlement [] neighbors) {
 		this.name = name;
 		this.location = location;
 		this.color = color;
-		this.listp = listp;
+		this.listhealthy = healthy;
+		this.listsick = sick;
+		this.max_people = max_people;
+		this.vaccine_doses = vaccine_doses;
+		this.neighbors = neighbors;
+	}
 	
-	}
-	public void setListP(List<Person> listp)
+	public void setListhealthy(List<Person> healthy)
 	{ 
-		this.listp=listp;
+		this.listhealthy=healthy;
 	}
-	public List<Person> getListP()
+	
+	public List<Person> getListhealthy()
 	{ 
-		return this.listp;
+		return this.listhealthy;
 	}
+	
+	public void setListsick(List<Person> sick)
+	{ 
+		this.listsick=sick;
+	}
+	
+	public List<Person> getListsick()
+	{ 
+		return this.listsick;
+	}
+	
+	public static int getmax_people()
+	{ 
+		return max_people;
+	}
+	public static void setmax_people( int max)
+	{ 
+		 max_people = max;
+	}
+
+	
+	public int getvaccine_doses()
+	{ 
+		return this.vaccine_doses;
+	}
+	public void setvaccine_doses(int vaccine_doses )
+	{ 
+		this.vaccine_doses = vaccine_doses;
+	}
+	
 	public String getName()
 	{ 
 		return this.name;
@@ -40,8 +84,16 @@ public class Settlement {
 	{ 
 		this.name = name;
 	}
-	//לבודוק אם צריך לעשות מתודה של השוואה בין אנשים וכך למצוא מיקום של מישו ברשימה 
+	 
+	public Settlement[] getneighbors()
+	{
+		return neighbors;
+	}
 	
+	public void setSettlement(Settlement [] neighbors)
+	{
+		this.neighbors =  neighbors;
+	}
 	
 	public RamzorColor getColor() {
 		return this.color;
@@ -50,26 +102,24 @@ public class Settlement {
 		 this.color = color;
 	}
 	
-	//למצוא דרך לדרוס את זה
-	
-	public  RamzorColor CalculateRamzorGrade() {
-		return this.color;
-	}
-	
+	/*
+	 * A method that calculates according to a formula the color of the traffic light of the place
+	 */
+	public abstract  RamzorColor CalculateRamzorGrade();
 	
 	
 	
+	
+	/*
+	 * A method that calculates the percentage of patients in place
+	 */
 	public double ContagiousPercent() {
-		double count = 0.0;
-		for(int i = 0; i<listp.size(); i++)
-		{
-			if(listp.get(i) instanceof Sick)
-				count++;
-		}
-		return count/listp.size();
-		
+		return listsick.size()/(listsick.size()+listhealthy.size());
 	}
 	
+	/*
+	 * Returns a random location 
+	 */
 	public Location RandomLocation() {
 		
 		 Random rand = new Random();
@@ -84,33 +134,62 @@ public class Settlement {
 	
 	
 	public boolean AddPerson (Person p) {
-		return this.listp.add(p);
-		
+		if(p  instanceof Sick) 
+			return this.listsick.add(p);
+		return this.listhealthy.add(p);
 	}
+	
+	
 	public boolean TransferPerson(Person p, Settlement s) {
-		s.listp.add(p);
-		this.listp.remove(p);
-		return true;
-	
+		if(listsick.size()+listhealthy.size() < max_people)
+		{
+			if(p  instanceof Sick) 
+			{
+				s.listsick.add(p);
+				this.listsick.remove(p);
+				return true;
+			}
+			s.listhealthy.add(p);
+			this.listhealthy.remove(p);
+			return true;
+		}
+		return false;
 	}
 	
-	
+	@Override
 	public String toString() {
 		String result;
-		result = "name: "+name+", location:"+location.toString()+", RamzorColor:" + color.toString() + "\nList of People:\n";
+		result = "name: "+name+", location:"+location.toString()+", RamzorColor:" + color.toString() +", max people:" +max_people+", vaccine doses:" +vaccine_doses+ ". \nList of healthy People:\nList of sick People:\n";
 
-		if(listp!=null)
+		if(listhealthy!=null)
 		{
-			for (int i=0;i<listp.size();i++) 
+			for (int i=0;i<listhealthy.size();i++) 
 			{
-				Person p = listp.get(i);
+				Person p = listhealthy.get(i);
 				result =result + p.toString() + "\n";
 			}
 		}
 		else
 			result = result + "Empty List";
-		
+		if(listsick!=null)
+		{
+			for (int i=0;i<listsick.size();i++) 
+			{
+				Person p = listsick.get(i);
+				result =result + p.toString() + "\n";
+			}
+		}
+		else
+			result = result + "Empty List";
 		return result;
 	}
+	
+	public boolean equals(Object o) {
+		if (!(o instanceof Settlement))
+		   return false;
+		Settlement n = (Settlement)o;
+		return this.name.equals(n.name) && this.location.equals(n.location)&& this.color.equals(n.color)&& this.listhealthy.equals(n.listhealthy)&& this.listsick.equals(n.listsick)&& max_people == n.max_people && this.vaccine_doses == n.vaccine_doses;
+	}
+	
 
 }
