@@ -1,3 +1,8 @@
+/*
+ * elon ifrah 207229931
+ * yosi iluz 208510248
+ * The department came to describe a vaccinated person. A vaccinated person can get sick after the vaccine!
+ */
 package Population;
 import Location.Location;
 import Country.Settlement;
@@ -22,6 +27,10 @@ public class Vaccinated extends Person  {
 		this.vaccinationTime = vaccinationTime;
 	}
 	
+	/*
+	 * @inheritDoc
+	 */
+	@Override
 	public  double ContagionProbability(){
 		double x = 0.0;
 		if(Clock.now() - this.getVaccinationTime() < 21)
@@ -31,13 +40,27 @@ public class Vaccinated extends Person  {
 		return x;
 	}
 	
+	/*
+	 * @inheritDoc
+	 */
+	@Override
 	public  Person Contagion(IVirus ivirus) {
 		Sick p = new Sick( this.getAge(),this.Getlocation(),this.Getsettlement(), Clock.now(), ivirus);
 		return p;
+		
 	}
 	
     public String toString(){
     	return "vaccinationTime:"+this.vaccinationTime+ super.toString();
+	}
+    
+    public boolean equals(Object o) {
+		if (!(o instanceof Vaccinated))
+		   return false;
+		Vaccinated n = (Vaccinated)o;
+		if( this.vaccinationTime == n.vaccinationTime  && super.equals(o))
+			return true;
+		return false;
 	}
 
 }
