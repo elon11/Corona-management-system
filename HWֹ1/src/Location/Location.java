@@ -1,5 +1,10 @@
-  
+/*
+ * elon ifrah 207229931
+ * yosi iluz 208510248
+ * The department describes a location that consists of length and width and a point in the field
+ */  
 package Location;
+
 
 
 public class Location {
@@ -36,6 +41,13 @@ public class Location {
 	
 	public String toString() {
 		return "Point:"+point.toString()+" ,Size:"+size.toString();
+	}
+	
+	public boolean equals(Object o) {
+		if (!(o instanceof Location))
+		   return false;
+		Location n = (Location)o;
+		return this.point.equals(n.point) && this.size.equals(n.size);
 	}
 
 }
