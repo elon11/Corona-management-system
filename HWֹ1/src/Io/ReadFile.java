@@ -1,3 +1,8 @@
+/*
+ * elon ifrah 207229931
+ * yosi iluz 208510248
+ * Department responsible for loading instances of the simulation from a file.
+ */
 package Io;
 import java.util.*;
 import Population.Healthy;
@@ -12,28 +17,31 @@ import Population.Person;
 
 
 
-public class ReadFile {
+public class SimulationFile {
 	private String path;
 	
 	
-	public ReadFile(String path)
+	public SimulationFile(String path)
 	{
 		this.path= path;
 		System.out.println("end constructor of ReadFile with this.path: "+this.path);
 	}
 	
-  public void FillCountryFromFile(HashMap<String,Settlement> map) {
+  
+	public void FillCountryFromFile(Map map) {
 	  System.out.println("start FillCountryFromFile");  
     try 
     {
       File myObj = new File(this.path);
       Scanner myReader = new Scanner(myObj);
-      String data;
-      while (myReader.hasNextLine()) 
+    
+     
+      String data ;
+      while (myReader.hasNext()) 
       {
-        data = myReader.nextLine();
-        System.out.println("data:"+ data);  
-         InsertCityToMap(map,data);  
+    	data = myReader.nextLine();
+    	System.out.println("data: "+ data); 
+    	InsertCityToMap(map,data);   
       }
       myReader.close();
     } 
@@ -44,18 +52,21 @@ public class ReadFile {
     }
   }
   
-  private void InsertCityToMap(HashMap<String,Settlement> map,String data)
+  /*
+   * A method that creates a list of people according to the details written in a text file and creates a place for them and puts them on the map
+   */
+	private void InsertCityToMap(Map map,String data)
 	{
-	  String name,area;
+	  String name , tipe;
 	  int xAge,yAge;
 	  int height,width,num,indexEnd, x, y,age;
 	  Random rand = new Random();
 
 	  //Getting the type of area examples:city...
 	  indexEnd = data.indexOf(";");
-	  area = (data.substring(0,indexEnd)).trim();
+	  tipe = (data.substring(0,indexEnd)).trim();
 	  data = data.substring(indexEnd+1, data.length());
-	  System.out.println(data);
+	  
 	  
 	  //Getting the name of area
 	  indexEnd = data.indexOf(";");
@@ -85,17 +96,29 @@ public class ReadFile {
 	  // getting num of people in city
 	  indexEnd = data.length(); //data.indexOf(";");
 	  num = Integer.parseInt(data.substring(0, indexEnd).trim());
-	  //data = data.substring(indexEnd+1, data.length() );
+	  
 	  
 	  //creating new element to add into array
 	  Point point = new Point(x,y);
 	  Size size = new Size(width, height);
 	  Location location= new Location(point,size);
 
-	  System.out.println("location:"+location.toString());
 	  
-	  List<Person> listp = new ArrayList<Person>();
-	  Settlement st = new Settlement(name,location,RamzorColor.Green,null);
+	  List<Person> listhealthy = new ArrayList<Person>();
+	  List<Person> listsick = new ArrayList<Person>();
+	  Settlement st = null ;
+	  
+	  int vaccine_doses = 0;
+	  Settlement [] neighbors;
+	  int max = (int) ((int)num * 1.3);
+	  Settlement.setmax_people(max); 
+	  
+	  if (tipe.equals("City")) 
+		    st = new City(name,location,RamzorColor.Green,null,null,max,vaccine_doses,null);   
+	  if (tipe.equals("Moshav"))
+		    st = new Moshav(name,location,RamzorColor.Green,null,null,max,vaccine_doses,null);
+	  if (tipe.equals("Kibbutz"))
+		    st = new Kibbutz(name,location,RamzorColor.Green,null,null,max,vaccine_doses,null);
 
 	  Healthy h;
 	  for(int i=0;i<num;i++)
@@ -107,15 +130,12 @@ public class ReadFile {
 		 age = Math.abs(5*xAge+yAge);
 		 h = new Healthy(age,location,st);
 		 h.Setlocation( h.Getsettlement().RandomLocation());
-		 listp.add(h);
+		 listhealthy.add(h);
 	  }
 	  //inserting into map
-	  st.setListP(listp);
-	  System.out.println(st.toString());
-	  map.put(st.getName(),st);
-		
+	  st.setListhealthy(listhealthy);
+	  System.out.println("tipe: "+ tipe +", "+ st.toString());
+	  map.AddSettlements(st);	
 	}
-  
-
-  
+     
 }
