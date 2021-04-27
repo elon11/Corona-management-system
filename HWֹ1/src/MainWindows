@@ -1,0 +1,44 @@
+package UI;
+
+import java.awt.BorderLayout;
+
+import javax.swing.*;
+
+
+
+	public class MainWindows extends JFrame {
+		
+		public MainWindows() {
+			super("Main Windows");
+		
+
+		//JFrame frame = new JFrame ("Main Windows"); 
+		//JPanel panel = new JPanel();
+		//BorderLayout myBorderLayout = new BorderLayout();
+		//myBorderLayout.setHgap(100);
+		//myBorderLayout.setVgap(100);
+		this.setLayout (new BorderLayout(this));
+		
+		JMenuBar menu = new JMenuBar();
+		
+		//final JLabel label = new JLabel("aaaa");
+		//frame.getContentPane().add(label);
+		//frame.add(panel);
+		
+		this.add(new JButton("Map Panel"),BorderLayout.CENTER);
+		this.add((menu),BorderLayout.NORTH);
+		//frame.add(new JButton("Menu"),BorderLayout.NORTH);
+		this.add(new JButton("Simulation Speed Slider"),BorderLayout.SOUTH);
+		this.pack();
+		this.setVisible (true);
+	}		
+		public static void main(String[] args ) {
+			MainWindows start_program = new MainWindows();
+			start_program.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
+			
+		}
+
+	
+
+
+
