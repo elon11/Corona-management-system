@@ -1,3 +1,8 @@
+/*
+ * elon ifrah 207229931
+ * yosi iluz 208510248
+ * The class describes the width and height of a place
+ */
 package Location;
 
 public class Size {
@@ -24,7 +29,16 @@ public class Size {
 	    return height;
 	}
 	public String toString() {
-		return ("(h:"+height+ ", w:"+width+")");
+		return ("(w:"+width+ ", h:"+height+")");
+	}
+	
+	public boolean equals(Object o) {
+		if (!(o instanceof Size))
+		   return false;
+		Size n = (Size)o;
+		if(this.height == n.height && this.width == n.width )
+			return true;
+		return false;
 	}
 
 }
