@@ -1,4 +1,8 @@
-
+/*
+ * elon ifrah 207229931
+ * yosi iluz 208510248
+ * The department describes a city on a map
+ */
 package Country;
 
 import java.util.List;
@@ -7,11 +11,15 @@ import Location.Location;
 import Population.Person;
 
 public class City extends Settlement {
-	public City(String name,Location location,RamzorColor color, List<Person> listp) {
-		super( name, location, color,  listp);
+	public City(String name,Location location,RamzorColor color, List<Person> healthy,List<Person> sick,int max_people,int vaccine_doses,Settlement [] neighbors) {
+		super( name, location, color,  healthy, sick, max_people, vaccine_doses, neighbors);
 	}
 	
-	@Override
+	
+	/*
+	 * { @inheritDoc }
+	 */
+    @Override
 	public  RamzorColor CalculateRamzorGrade() {
 		double num;
 		num = 0.2*Math.pow(4, (1.25*ContagiousPercent()));
@@ -23,22 +31,15 @@ public class City extends Settlement {
 			this.color = RamzorColor.Orange; 
 		if(num >0.8)
 			this.color = RamzorColor.Red; 
-		
-		this.setColor(color);
 		return this.color;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	public boolean equals(Object o) {
+		if (!(o instanceof City))
+		   return false;
+		return true;
+	}
+
 	
 	
 	
