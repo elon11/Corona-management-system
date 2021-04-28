@@ -19,7 +19,7 @@ public abstract class Settlement {
 	protected List<Person> listhealthy;
 	protected List<Person> listsick;
 	protected RamzorColor color;
-	static public int max_people;
+	static protected int max_people;
 	protected int vaccine_doses;
 	protected Settlement [] neighbors;
 	public Settlement() {
@@ -143,17 +143,27 @@ public abstract class Settlement {
 	public boolean TransferPerson(Person p, Settlement s) {
 		if(listsick.size()+listhealthy.size() < max_people)
 		{
-			if(p  instanceof Sick) 
-			{
-				s.listsick.add(p);
-				this.listsick.remove(p);
+			double p1=this.getColor().getnumber();
+			double p2=s.getColor().getnumber();
+			if(transferPropabillity(p1,p2)) {
+				if(p  instanceof Sick) 
+				{
+					s.listsick.add(p);
+					this.listsick.remove(p);
+					return true;
+				}
+				s.listhealthy.add(p);
+				this.listhealthy.remove(p);
 				return true;
-			}
-			s.listhealthy.add(p);
-			this.listhealthy.remove(p);
-			return true;
+		    }
 		}
 		return false;
+	}
+	private boolean transferPropabillity(double p1, double p2)
+	{
+		
+		 double chance =p1*p2;
+		 return chance >=Math.random();	 
 	}
 	
 	@Override
