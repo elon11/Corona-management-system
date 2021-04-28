@@ -1,44 +1,141 @@
+
 package UI;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
 
 
 	public class MainWindows extends JFrame {
-		
+		private final JMenuBar mb;
 		public MainWindows() {
 			super("Main Windows");
+			this.mb = new JMenuBar();
+			
+			mb.setLayout(new BoxLayout(mb,BoxLayout.LINE_AXIS));
+			JButton btmap = new JButton ("map");
+			JButton btSpeed = new JButton ("Simulation Speed Slider");
+			JMenu btfile = new JMenu ("file");
+			JMenu btsimulation = new JMenu ("simulation");
+			JMenu btHelp = new JMenu ("Help");
+			
+			JMenuItem btLoad = new JMenuItem ("Load");
+			btLoad.addActionListener(new ActionListener() {
+			    @Override
+				public void actionPerformed (ActionEvent e) {
+			 
+			    	System.out.println( "111");				
+				}
+		    });
+			
+			JMenuItem btStatistics = new JMenuItem ("Statistics");
+			btStatistics.addActionListener(new ActionListener() {
+			    @Override
+				public void actionPerformed (ActionEvent e) {
+			 
+			    	System.out.println( "111");				
+				}
+		    });
+			
+			JMenuItem btMutationsEdit = new JMenuItem ("Mutations Edit");
+			btMutationsEdit.addActionListener(new ActionListener() {
+			    @Override
+				public void actionPerformed (ActionEvent e) {
+			 
+			    	System.out.println( "111");				
+				}
+		    });
+			
+			JMenuItem btExit = new JMenuItem ("Exit");
+			btExit.addActionListener(new ActionListener() {
+			    @Override
+				public void actionPerformed (ActionEvent e) {
+			 
+			    	System.out.println( "111");				
+				}
+		    });
+			
+			JMenuItem btPlay = new JMenuItem ("Play");
+			btPlay.addActionListener(new ActionListener() {
+			    @Override
+				public void actionPerformed (ActionEvent e) {
+			 
+			    	System.out.println( "111");				
+				}
+		    });
+			
+			JMenuItem btPause = new JMenuItem ("Pause");
+			btPause.addActionListener(new ActionListener() {
+			    @Override
+				public void actionPerformed (ActionEvent e) {
+			 
+			    	System.out.println( "111");				
+				}
+		    });
+			
+			JMenuItem btStop = new JMenuItem ("Stop");
+			btStop.addActionListener(new ActionListener() {
+			    @Override
+				public void actionPerformed (ActionEvent e) {
+			 
+			    	System.out.println( "111");				
+				}
+		    });
+			
+			JMenuItem btDayPerTicksSet = new JMenuItem ("Day Per Ticks Set");
+			btDayPerTicksSet.addActionListener(new ActionListener() {
+			    @Override
+				public void actionPerformed (ActionEvent e) {
+			 
+			    	System.out.println( "111");				
+				}
+		    });
+			
+			JMenuItem bthelp = new JMenuItem ("help");
+			bthelp.addActionListener(new ActionListener() {
+			    @Override
+				public void actionPerformed (ActionEvent e) {
+			 
+			    	System.out.println( "111");				
+				}
+		    });
+			
+			JMenuItem btAbout = new JMenuItem ("About");
+			btAbout.addActionListener(new ActionListener() {
+			    @Override
+				public void actionPerformed (ActionEvent e) {
+			 
+			    	System.out.println( "111");				
+				}
+		    });
+			
+			
+	
 		
-
-		//JFrame frame = new JFrame ("Main Windows"); 
-		//JPanel panel = new JPanel();
-		//BorderLayout myBorderLayout = new BorderLayout();
-		//myBorderLayout.setHgap(100);
-		//myBorderLayout.setVgap(100);
-		this.setLayout (new BorderLayout(this));
+			
+		this.setLayout (new BorderLayout());
+		this.add(mb,BorderLayout.NORTH);
 		
-		JMenuBar menu = new JMenuBar();
+		this.add(btmap,BorderLayout.CENTER);
+		this.add(btSpeed,BorderLayout.SOUTH);
 		
-		//final JLabel label = new JLabel("aaaa");
-		//frame.getContentPane().add(label);
-		//frame.add(panel);
+		mb.add(btfile);mb.add(btsimulation);mb.add(btHelp);
+		btfile.add(btLoad);btfile.add(btStatistics);btfile.add(btMutationsEdit);btfile.add(btExit);
+		btsimulation.add(btPlay);btsimulation.add(btPause);btsimulation.add(btStop);btsimulation.add(btDayPerTicksSet);
+		btHelp.add(bthelp);btHelp.add(btAbout);
 		
-		this.add(new JButton("Map Panel"),BorderLayout.CENTER);
-		this.add((menu),BorderLayout.NORTH);
-		//frame.add(new JButton("Menu"),BorderLayout.NORTH);
-		this.add(new JButton("Simulation Speed Slider"),BorderLayout.SOUTH);
+	
 		this.pack();
 		this.setVisible (true);
-	}		
+		}	
 		public static void main(String[] args ) {
 			MainWindows start_program = new MainWindows();
-			start_program.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
+			start_program.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
 		}
+	}
 
-	
-
-
-
+ 
