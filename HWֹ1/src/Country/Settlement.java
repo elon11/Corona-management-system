@@ -75,7 +75,10 @@ public abstract class Settlement {
 	{ 
 		this.vaccine_doses = vaccine_doses;
 	}
-	
+	public int getPopulation()
+	{ 
+		return this.listhealthy.size()+this.listsick.size();
+	}
 	public String getName()
 	{ 
 		return this.name;
