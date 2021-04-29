@@ -7,8 +7,15 @@ package Population;
 import Simulation.Clock;
 import Location.Location;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import Country.Settlement;
+import Virus.BritishVariant;
+import Virus.ChineseVariant;
 import Virus.IVirus;
+import Virus.SouthAfricanVariant;
 
 public class Healthy extends Person {
 	
@@ -34,8 +41,33 @@ public class Healthy extends Person {
     @Override
     public  Person Contagion(IVirus ivirus) {
     	
-    	Sick p = new Sick( this.getAge(),this.Getlocation(),this.Getsettlement(), Clock.now(), ivirus);
-		return p;
+    	Sick s;
+		Random rand = new Random();
+		if (ivirus instanceof BritishVariant)
+		{
+			List<IVirus> list = new ArrayList<IVirus>(BritishVariant.getMutation());
+			int x1=rand.nextInt(list.size());
+			ivirus = list.get(x1);
+			s=new Sick(this.getAge(),this.Getlocation(),this.Getsettlement(),Clock.now(),ivirus);
+			return s;
+		}
+		if (ivirus instanceof ChineseVariant)
+		{
+			List<IVirus> list = new ArrayList<IVirus>(BritishVariant.getMutation());
+			int x1=rand.nextInt(list.size());
+			ivirus = list.get(x1);
+			s=new Sick(this.getAge(),this.Getlocation(),this.Getsettlement(),Clock.now(),ivirus);
+			return s;
+		}
+		if (ivirus instanceof SouthAfricanVariant)
+		{
+			List<IVirus> list = new ArrayList<IVirus>(BritishVariant.getMutation());
+			int x1=rand.nextInt(list.size());
+			ivirus = list.get(x1);
+			s=new Sick(this.getAge(),this.Getlocation(),this.Getsettlement(),Clock.now(),ivirus);
+			return s;
+		}
+		return s=new Sick(this.getAge(),this.Getlocation(),this.Getsettlement(),Clock.now(),ivirus);
 		
     }
     /*
