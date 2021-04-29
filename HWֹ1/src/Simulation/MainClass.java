@@ -49,7 +49,7 @@ public class MainClass {
 	     
 	      
 	      
-	public static void main(String[] args) {
+	public static void Simulation(String[] args) {
 		//Step Charging 
 		System.out.println("start main");    
 		String path = "C:\\Users\\elony\\Desktop\\Map.Read.txt";
@@ -112,11 +112,9 @@ public class MainClass {
 					if(descVirus.contains("SouthAfricanVariant"))
 						virus = new SouthAfricanVariant();
 					if(virus.tryToContagion(map.getSettlement()[j].getListsick().get(a),map.getSettlement()[j].getListhealthy().get(k))) {
-						//לבדוק באיזה וירוס מדביקקים אותו לפי ההסבר בסעיף 2.6
-						p2 = new Sick(map.getSettlement()[j].getListhealthy().get(k).getAge(),map.getSettlement()[j].getListhealthy().get(k).Getlocation(),map.getSettlement()[j].getListhealthy().get(k).Getsettlement(),Clock.now(),virus0);
+						 p2 = new Sick(map.getSettlement()[j].getListhealthy().get(k).getAge(),map.getSettlement()[j].getListhealthy().get(k).Getlocation(),map.getSettlement()[j].getListhealthy().get(k).Getsettlement(),Clock.now(),virus0);
 						 map.getSettlement()[j].getListhealthy().remove(k);
 						 map.getSettlement()[j].getListsick().add(p2);
-						 //לבדוק אם זה נכון הלולאה שרצה 3 פעמים ומנסה להדביק 3 אנשים כי תמיד הוא בודק רק את ה 3 אנשים ראשונים שברשימה
 					}
 					
 				}
@@ -129,8 +127,33 @@ public class MainClass {
 						 map.getSettlement()[i].getListsick().remove(a);
 						 map.getSettlement()[i].getListhealthy().add(b);
 					}
+				}		
+			}
+			private List<Person> templist = null;
+			for(int i = 0; i< Map.getCurrentSize(); i++) {// make sick to Convalescent
+				for(int a = 0;a< map.getSettlement()[i].getListhealthy().size();a++) {
+					templist.add( map.getSettlement()[i].getListhealthy().get(a));
 				}
-					
+				for(int a = map.getSettlement()[i].getListhealthy().size(); a<map.getSettlement()[i].getListsick().size()+map.getSettlement()[i].getListhealthy().size();a++) {
+					templist.add( map.getSettlement()[i].getListsick().get(a));
+				}
+				for(int a = 0;a<templist.size()*0.03;a++) {
+					Random r = new Random();
+			    	int s = r.nextInt(templist.size()); 
+			    	int m= r.nextInt(templist.get(s).Getsettlement().getneighbors().length); 
+			    	templist.get(s).Getsettlement().TransferPerson(templist.get(s), templist.get(s).Getsettlement().getneighbors()[m]);
+				}
+			}
+			Person b = null;
+			for(int l = 0; l< Map.getCurrentSize(); l++) {
+				if(map.getSettlement()[i].getvaccine_doses()>0) {
+					for(int y = 0; y< map.getSettlement()[i].getListhealthy().size(); y++) {
+						if(map.getSettlement()[i].getvaccine_doses>0 && map.getSettlement()[i].getListhealthy()[y] instanceof Healthy ) {
+							 b = new Vaccinated(((Healthy) map.getSettlement()[i].getListhealthy().get(y)).getAge(),((Healthy) map.getSettlement()[i].getListhealthy().get(y)).Getlocation(),((Sick) map.getSettlement()[i].getListhealthy().get(y)).Getsettlement(),Clock.now());
+						         map.getSettlement()[i].setvaccine_doses(map.getSettlement()[i].getvaccine_doses - 1);
+					         }
+					}
+				}
 			}
 	
 				
