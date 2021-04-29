@@ -24,8 +24,7 @@ public class StatisticsFile {
 	      sb.append("Number of vaccine doses ");
 	      sb.append(',');
 	      sb.append('\n');
-	      writer.write(sb.toString());
-	      for(int i=0; i<map.getsize();i++) {
+	      for(int i=0; i<map.getSettlement().length;i++) {
 	      sb.append(map.getSettlement()[i].getName());
 	       sb.append(',');
 	       	 if(map.getSettlement()[i] instanceof City ) {
@@ -39,12 +38,13 @@ public class StatisticsFile {
 	       	 sb.append(',');
 	         sb.append(map.getSettlement()[i].getColor());
 	    	 sb.append(',');
-	      	 sb.append(map.getSettlement()[i].getListsick().size()/100);
+	      	 sb.append(map.getSettlement()[i].getListsick().size()/map.getSettlement()[i].getPopulation()*100+"%");
 	       	 sb.append(',');
 	       	 sb.append(map.getSettlement()[i].getvaccine_doses());
 	         sb.append('\n');
 	      }
-	      
+	      writer.write(sb.toString());
+	      writer.close();
 	    } catch (FileNotFoundException e) {
 	      System.out.println(e.getMessage());
 	    }
