@@ -34,10 +34,13 @@ public class Clock {
 	{
 		time++;
 	}
-	
-	public static long past_day(int start)
+	public static void set_ticks_per_day(int new_tic)
 	{
-		long day = Math.round( time/ticks_per_day + start +0.5);
+		ticks_per_day=new_tic;
+	}
+	public static long past_day(long l)
+	{
+		long day = Math.round( time/ticks_per_day - l +0.5);
 		return day;
 	}
 }
