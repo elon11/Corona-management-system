@@ -1,11 +1,11 @@
 /*
  * elon ifrah 207229931
  * yosi iluz 208510248
- */ 
+ */
+
 package Simulation;
-import Io.SimulationFile;
-import Population.Person;
-import Population.Sick;
+import Io.*;
+import Population.*;
 import Virus.*;
 
 import java.awt.FileDialog;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Random;
 import Country.*;
 
-/*
+
  
  
 
@@ -40,13 +40,13 @@ public class MainClass {
 			 return fileObj;
 		}
 		
-	*/	
 		
 		
-	/*
-	 * A main function whose function is to load the file in places and populations define patients and perform simulations to try to infect people
-	 */
-	     /*
+		
+	
+	 // A main function whose function is to load the file in places and populations define patients and perform simulations to try to infect people
+	 
+	     
 	      
 	      
 	public static void main(String[] args) {
@@ -75,7 +75,7 @@ public class MainClass {
 			
 			settlement = map.getSettlement()[i];
 				num = map.getSettlement()[i].getListhealthy().size();
-				num = (int)(0.01*num);
+				num = (int)(0.2*num);
 			    
 				virus0 = new ChineseVariant();
 		    	virus1 = new BritishVariant();
@@ -94,69 +94,73 @@ public class MainClass {
 			    	System.out.println(p.toString());	
 			    }  
 		}
-		
+
+
 		//Step Simulation 
 		IVirus virus = null;
 		String descVirus;
-		for(int i = 0; i< 5; i++) {//Performs 5 simulations
-			boolean flag = false;
-			for(int j = 0; j< Map.getCurrentSize(); j++) {// מעברGoes through all the places on the map
-				int index = 0;
-				int y = 0;
-				while(!flag && y< map.getSettlement()[j].getListP().size()) {
-					if(map.getSettlement()[j].getListP().get(y) instanceof Sick)
-					{ 
-						flag = true;
-						index = y;
-					}	
-					y++;
-				}
-				Person p2 = null;
-				for(int k = 0; k<6; k++) {// Trying to infect 6 people randomly
-					Random rand = new Random();
-					List<Person> temp = map.getSettlement()[j].getListP();
-					int x = rand.nextInt(temp.size());
-					if(!(map.getSettlement()[j].getListP().get(x) instanceof Sick))
-					{
-						descVirus = map.getSettlement()[j].getListP().get(index).toString();
-						if(descVirus.contains("ChineseVariant"))
-							virus = new ChineseVariant();
-						if(descVirus.contains("BritishVariant"))
-							virus = new BritishVariant();
-						if(descVirus.contains("SouthAfricanVariant"))
-							virus = new SouthAfricanVariant();
-						if(virus.tryToContagion(map.getSettlement()[j].getListP().get(index),map.getSettlement()[j].getListP().get(x)))
-						{
-							 p2 = map.getSettlement()[j].getListP().get(x).Contagion(virus);
-							 map.getSettlement()[j].getListP().remove(x);
-							 map.getSettlement()[j].getListP().add(p2);
-						}
+		Sick p2 = null;
+		boolean flag = false;
+		for(int j = 0; j< Map.getCurrentSize(); j++) {// Goes through all the places on the map
+			for(int a = 0; a<map.getSettlement()[j].getListsick().size();a++) {
+				for(int k = 0; k<3; k++) {//try to contagion 3 people healthy
+					descVirus = map.getSettlement()[j].getListsick().get(a).toString();
+					if(descVirus.contains("ChineseVariant"))
+						virus = new ChineseVariant();
+					if(descVirus.contains("BritishVariant"))
+						virus = new BritishVariant();
+					if(descVirus.contains("SouthAfricanVariant"))
+						virus = new SouthAfricanVariant();
+					if(virus.tryToContagion(map.getSettlement()[j].getListsick().get(a),map.getSettlement()[j].getListhealthy().get(k))) {
+						//לבדוק באיזה וירוס מדביקקים אותו לפי ההסבר בסעיף 2.6
+						p2 = new Sick(map.getSettlement()[j].getListhealthy().get(k).getAge(),map.getSettlement()[j].getListhealthy().get(k).Getlocation(),map.getSettlement()[j].getListhealthy().get(k).Getsettlement(),Clock.now(),virus0);
+						 map.getSettlement()[j].getListhealthy().remove(k);
+						 map.getSettlement()[j].getListsick().add(p2);
+						 //לבדוק אם זה נכון הלולאה שרצה 3 פעמים ומנסה להדביק 3 אנשים כי תמיד הוא בודק רק את ה 3 אנשים ראשונים שברשימה
 					}
+					
 				}
 			}
-			Clock.nextTick();
-			
-			try {
+			Person b = null;
+			for(int i = 0; i< Map.getCurrentSize(); i++) {// make sick to Convalescent
+				for(int a = 0; a<map.getSettlement()[i].getListsick().size();a++) {
+					if(Clock.now() - ((Sick) map.getSettlement()[i].getListsick().get(a)).getContagiousTime()>25) {
+						 b = new Convalescent(((Sick) map.getSettlement()[i].getListsick().get(a)).getAge(),((Sick) map.getSettlement()[i].getListsick().get(a)).Getlocation(),((Sick) map.getSettlement()[i].getListsick().get(a)).Getsettlement(),((Sick) map.getSettlement()[i].getListsick().get(a)).getVirus());
+						 map.getSettlement()[i].getListsick().remove(a);
+						 map.getSettlement()[i].getListhealthy().add(b);
+					}
+				}
 					
-			      FileWriter myWriter = new FileWriter(fd.getDirectory() +"/"+ fd.getFile());//new FileWriter("C:\\Users\\elony\\Desktop\\MapOutput.txt");
-			      
-			      
-			      for(int j = 0; j< Map.getCurrentSize(); j++) {
-						map.getSettlement()[j].CalculateRamzorGrade();
-						myWriter.write(map.getSettlement()[j].toString());
-						System.out.println(map.getSettlement()[j].toString());
-					}	
-			      
-			      myWriter.close();
-			    } catch (IOException e) {
-			      System.out.println("An error occurred.");
-			      e.printStackTrace();
-			    }
-			
+			}
+	
+				
+		Clock.nextTick();
+		
+		try {
+				
+		      FileWriter myWriter = new FileWriter(fd.getDirectory() +"/"+ fd.getFile());//new FileWriter("C:\\Users\\elony\\Desktop\\MapOutput.txt");
+		      
+		      
+		      for(int n = 0; n< Map.getCurrentSize(); n++) {
+					map.getSettlement()[n].CalculateRamzorGrade();
+					myWriter.write(map.getSettlement()[n].toString());
+					System.out.println(map.getSettlement()[n].toString());
+				}	
+		      
+		      myWriter.close();
+		    }
+		catch (IOException e) {
+			System.out.println("An error occurred.");
+		      e.printStackTrace();
 		}
+		      
+		    
+		}
+		}
+	
 			
 		
-	}
+	
 	
 	 private static FileWriter saveFileFunc(String fileName) {
 			try {
@@ -181,8 +185,10 @@ public class MainClass {
 			      outputFile=null;
 			    }
 			return outputFile;
-			}
-	 
 	 }
-		
-*/
+  
+   
+	 
+ }
+*/		
+
