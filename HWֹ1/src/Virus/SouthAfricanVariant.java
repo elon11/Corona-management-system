@@ -18,6 +18,9 @@ public class SouthAfricanVariant implements IVirus {
 	 * @param p - A method that calculates the probability that the transferred person will be infected.
 	 */
 	private final static int min_coutage_time=5;
+	private static boolean British_mutation = true;
+	private static boolean Chinese_mutation = true;
+	private static boolean SouthAfrican_mutation = true;
 	private static List<IVirus> variant = new ArrayList<IVirus>();
 	static {
 		variant.add(new SouthAfricanVariant());
@@ -108,5 +111,23 @@ public class SouthAfricanVariant implements IVirus {
 	public static List<IVirus> getMutation() 
 	{
 		return variant;
+	}
+	public static boolean Get_British_mutation() {
+		return British_mutation;
+	}
+	public static boolean Get_Chinese_mutation() {
+		return Chinese_mutation;
+	}
+	public static boolean Get_SouthAfrican_mutation() {
+		return SouthAfrican_mutation;
+	}
+	public static void Set_British_mutation(boolean x) {
+		 British_mutation = x;
+	}
+	public static void Set_Chinese_mutation(boolean x) {
+		Chinese_mutation = x;
+	}
+	public static void Set_SouthAfrican_mutation(boolean x) {
+		SouthAfrican_mutation = x;
 	}
 }
