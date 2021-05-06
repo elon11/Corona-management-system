@@ -1,0 +1,207 @@
+/*
+ * elon ifrah 207229931
+ * yosi iluz 208510248
+ * Department responsible for loading instances of the simulation from a file.
+ */
+package Io;
+import java.util.*;
+import Population.Healthy;
+import java.io.*;
+import Country.*;
+import Country.Settlement;
+import Location.Location;
+import Location.Point;
+import Location.Size;
+import Country.Map;
+import Population.Person;
+
+
+
+public class SimulationFile {
+	private File file;
+	private Map map;
+
+
+	public SimulationFile(File file)
+	{
+		this.file= file;
+		
+	}
+	
+  
+	public Map FillCountryFromFile() {
+	  System.out.println("start FillCountryFromFile"); 
+	  map = new Map();
+	  String firstTav;
+	  
+	    try 
+	    {
+	    	
+	    	Scanner myReader = new Scanner(this.file);
+	    
+	     
+	      String data ;
+	      while (myReader.hasNext()) 
+	      {
+	        
+	    	data = myReader.nextLine();
+	    	System.out.println("data: "+ data); 
+	    	firstTav = data.substring(0,1);
+	    	if(!firstTav.equals("#")) 
+	    		InsertCityToMap(map,data);
+	    	else
+	    		InsertN_B(map,data);
+	      }
+	      
+	      myReader.close();
+	      return map;
+	    } 
+	    catch (FileNotFoundException e) 
+	    {
+	      System.out.println("An error occurred.");
+	      e.printStackTrace();
+	    }
+        return null;
+  }
+  
+  /*
+   * A method that creates a list of people according to the details written in a text file and creates a place for them and puts them on the map
+   */
+	private void InsertCityToMap(Map map,String data)
+	{
+	  String name , tipe;
+	  int xAge,yAge;
+	  int height,width,num,indexEnd, x, y,age;
+	  Random rand = new Random();
+
+	  //Getting the type of area examples:city...
+	  indexEnd = data.indexOf(";");
+	  tipe = (data.substring(0,indexEnd)).trim();
+	  data = data.substring(indexEnd+1, data.length());
+	  
+	  //Getting the name of area
+	  indexEnd = data.indexOf(";");
+	  name = (data.substring(0, indexEnd)).trim();
+	  data = data.substring(indexEnd+1, data.length());
+	  
+	  //Getting the X position
+	  indexEnd = data.indexOf(";");
+	  x= Integer.parseInt((data.substring(0, indexEnd)).trim());
+	  data = data.substring(indexEnd+1, data.length());
+	  
+	  //Getting the y position
+	  indexEnd = data.indexOf(";");
+	  y = Integer.parseInt(data.substring(0, indexEnd).trim());
+	  data = data.substring(indexEnd+1, data.length());
+
+	  //Getting the height size
+	  indexEnd = data.indexOf(";");
+	  height = Integer.parseInt(data.substring(0, indexEnd).trim());
+	  data = data.substring(indexEnd+1, data.length());
+	  
+	  //Getting the width size
+	  indexEnd = data.indexOf(";");
+	  width = Integer.parseInt(data.substring(0, indexEnd).trim());
+	  data = data.substring(indexEnd+1, data.length());
+	  
+	  // getting num of people in city
+	  indexEnd = data.length(); //data.indexOf(";");
+	  num = Integer.parseInt(data.substring(0, indexEnd).trim());
+	  
+	  
+	  //creating new element to add into array
+	  Point point = new Point(x,y);
+	  Size size = new Size(width, height);
+	  Location location= new Location(point,size);
+
+	  
+	  List<Person> listhealthy = new ArrayList<Person>();
+	  List<Person> listsick = new ArrayList<Person>();
+	  Settlement st = null ;
+	  
+	  int vaccine_doses = 0;
+	  Settlement [] neighbors;
+	  int max = (int) ((int)num * 1.3);
+	  Settlement.setmax_people(max); 
+	  
+	  //inserting into map
+	  
+	  if (tipe.equals("City")) 
+		    st = new City(name,location,RamzorColor.Green,null,null,max,vaccine_doses,null);   
+	  if (tipe.equals("Moshav"))
+		    st = new Moshav(name,location,RamzorColor.Green,null,null,max,vaccine_doses,null);
+	  if (tipe.equals("Kibbutz"))
+		    st = new Kibbutz(name,location,RamzorColor.Green,null,null,max,vaccine_doses,null);
+	    Healthy h;
+		  for(int i=0;i<num;i++)
+		  {
+			  
+			 Random r = new Random();
+			 xAge = (int) (r.nextGaussian()*6 + 9);
+			 yAge = rand.nextInt(5); //getting number between 0-4	
+			 age = Math.abs(5*xAge+yAge);
+			 h = new Healthy(age,location,st);
+			 h.Setlocation( h.Getsettlement().RandomLocation());
+			 listhealthy.add(h);
+		  }
+		  st.setListhealthy(listhealthy);
+		  st.setListsick(listsick);
+	
+	  System.out.println("tipe: "+ tipe +", "+ st.toString());
+	  map.AddSettlements(st);
+	  
+	  
+	}
+	
+	
+	
+	
+	/*
+	   * A method that inserting 2 neighborous into settelment n array 
+	   */
+		private void InsertN_B(Map map,String data)
+		{
+		  String name_first,name_second,nameS;
+		  Settlement s1=null,s2=null;
+		  int indexEnd;
+
+		  
+		  //Put-out the "#"char
+		  data = data.substring(2, data.length());
+		  
+		  
+		  
+		  //Put-out the first NB
+		  indexEnd = data.indexOf(";");
+		  name_first = (data.substring(0, indexEnd)).trim();
+		  data = data.substring(indexEnd+1, data.length());
+		  
+		  //Put-out the second NB
+		  indexEnd = data.length();
+		  name_second = (data.substring(0, indexEnd)).trim();
+		
+		  
+		 int indexS1=-1,indexS2=-1;
+	      for( int j = 0; j< Map.getCurrentSize(); j++) {
+				nameS = map.getSettlement()[j].getName();
+				if(nameS.equals(name_first))
+				{
+					
+					indexS1= j;
+					
+				}
+				if(nameS.equals(name_second))
+				{
+					
+					indexS2 =j;
+				}
+	      }
+				
+	      if(indexS1 != -1 &&indexS2!=-1)
+	      {
+	    	  map.getSettlement()[indexS1].AddNeighbors(map.getSettlement()[indexS2]);
+	    	  map.getSettlement()[indexS2].AddNeighbors(map.getSettlement()[indexS1]);
+	      }
+	      
+		}    
+}

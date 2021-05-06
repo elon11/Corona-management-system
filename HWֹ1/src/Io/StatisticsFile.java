@@ -1,0 +1,59 @@
+/*
+ * elon ifrah 207229931
+ * yossi iluz 208510248
+ *A class  that makes it possible to maintain the cutting of the disease status in all localities,
+ */
+package Io;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
+import Country.*;
+
+public class StatisticsFile   {
+	
+	public static void writeCsv(Map map, File f) {
+
+	    try (PrintWriter writer = new PrintWriter(new File("test.csv"))) {
+	      StringBuilder sb = new StringBuilder();
+	      sb.append("Settelement Name,");
+	      sb.append(',');
+	      sb.append("Settelement Type");
+	      sb.append(',');
+	      sb.append("Population");
+	      sb.append(',');
+	      sb.append("Ramzor color");
+	      sb.append(',');
+	      sb.append("sick Percent ");
+	      sb.append(',');
+	      sb.append("Number of vaccine doses ");
+	      sb.append(',');
+	      sb.append('\n');
+	      for(int i=0; i<map.getSettlement().length-1;i++) {
+	         sb.append(map.getSettlement()[i].getName());
+	         sb.append(',');
+	       	 if(map.getSettlement()[i] instanceof City ) {
+	    	   sb.append("City ");}
+	       	 else if(map.getSettlement()[i] instanceof Kibbutz) {
+	       		   sb.append("Kibbutz ");}
+	       	 else 
+	       		 sb.append("Moshav ");
+	       	 sb.append(',');
+	       	 sb.append(map.getSettlement()[i].getPopulation());
+	       	 sb.append(',');
+	         sb.append(map.getSettlement()[i].getColor());
+	    	 sb.append(',');
+	      	 sb.append(map.getSettlement()[i].getListsick().size()/map.getSettlement()[i].getPopulation()*100+"%");
+	       	 sb.append(',');
+	       	 sb.append(map.getSettlement()[i].getvaccine_doses());
+	         sb.append('\n');
+	      }
+	      writer.write(sb.toString());
+	      writer.close();
+	    } catch (FileNotFoundException e) {
+	      System.out.println(e.getMessage());
+	    }
+
+	  }
+}
