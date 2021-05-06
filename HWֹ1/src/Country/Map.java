@@ -1,6 +1,6 @@
 /*
  * elon ifrah 207229931
- * yosi iluz 208510248
+ * yossi iluz 208510248
  * The department describes the map of the area
  */
 package Country;
@@ -11,8 +11,9 @@ public class Map {
 	private static int size =1;
 	private static int index =0;
 	
-	public  Map()
+	public  Map ()
 	{
+		
 		settlement = new Settlement[size];
 		System.out.println("end constructor of map with this.size: "+ Map.size); 
 	}
@@ -65,9 +66,15 @@ public class Map {
 			{
 				settlementTemp[i]= settlement[i];
 			}
+			
 			settlement= settlementTemp;
-
+			
+			
 		}
+		System.out.println("*****"+settlement.length);
 	}
+	
+	
+	
 
 }

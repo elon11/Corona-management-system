@@ -16,12 +16,14 @@ import Location.Point;
 public abstract class Settlement {
 	protected String name;
 	protected Location location;
-	protected List<Person> listhealthy;
-	protected List<Person> listsick;
+	protected List<Person> listhealthy= new ArrayList<Person>();
+	protected List<Person> listsick= new ArrayList<Person>();
 	protected RamzorColor color;
 	static protected int max_people;
 	protected int vaccine_doses;
 	protected Settlement [] neighbors;
+	protected int sizeN ;
+	protected int currentN ;
 	public Settlement() {
 
 	
@@ -34,7 +36,40 @@ public abstract class Settlement {
 		this.listsick = sick;
 		this.max_people = max_people;
 		this.vaccine_doses = vaccine_doses;
-		this.neighbors = neighbors;
+		sizeN = 20;
+		currentN = 0;
+		this.neighbors = new Settlement[sizeN];
+	}
+	public Settlement(Settlement s) {
+		this.name = s.getName();
+		this.location = s.getlocation();
+		this.color = s.getColor();
+		this.listhealthy = s.getListhealthy();
+		this.listsick = s.getListsick();
+		this.max_people = s.getmax_people();
+		this.vaccine_doses = s.getvaccine_doses();
+		
+		//sizeN = 20;
+		//currentN = 0;
+		this.neighbors = s.getneighbors();
+		//this.neighbors = new Settlement[sizeN];
+	}
+	
+	
+	public void AddNeighbors(Settlement newS)
+	{
+		neighbors[currentN]= newS;
+		currentN ++;
+		if(currentN==sizeN)
+		{
+			sizeN = sizeN *2;
+			Settlement [] neighborsNew = new Settlement[sizeN];
+			for(int i=0;i<=currentN;i++)
+			{
+				neighborsNew[i] = neighbors[i];
+			}
+			neighbors = neighborsNew;
+		}
 	}
 	
 	public void setListhealthy(List<Person> healthy)
@@ -79,13 +114,17 @@ public abstract class Settlement {
 	{ 
 		return this.listhealthy.size()+this.listsick.size();
 	}
-	public String getName()
+	public Location getlocation()
 	{ 
-		return this.name;
+		return this.location;
 	}
 	public void setName(String name)
 	{ 
 		this.name = name;
+	}
+	public String getName()
+	{ 
+		return this.name;
 	}
 	 
 	public Settlement[] getneighbors()
@@ -96,6 +135,10 @@ public abstract class Settlement {
 	public void setSettlement(Settlement [] neighbors)
 	{
 		this.neighbors =  neighbors;
+	}
+	public int getNumN()
+	{
+		return this.currentN;
 	}
 	
 	public RamzorColor getColor() {
