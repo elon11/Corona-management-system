@@ -19,11 +19,12 @@ public abstract class Settlement {
 	protected List<Person> listhealthy= new ArrayList<Person>();
 	protected List<Person> listsick= new ArrayList<Person>();
 	protected RamzorColor color;
-	static protected int max_people;
+    protected int max_people;
 	protected int vaccine_doses;
 	protected Settlement [] neighbors;
 	protected int sizeN ;
 	protected int currentN ;
+	protected int num_of_dead = 0;
 	public Settlement() {
 
 	
@@ -92,13 +93,21 @@ public abstract class Settlement {
 		return this.listsick;
 	}
 	
-	public static int getmax_people()
+	public  int getmax_people()
 	{ 
-		return max_people;
+		return this.max_people;
 	}
-	public static void setmax_people( int max)
+	public  void setmax_people( int max)
 	{ 
-		 max_people = max;
+		 this.max_people = max;
+	}
+	public  void setnum_of_dead()
+	{ 
+		this.num_of_dead++;
+	}
+	public  int getnum_of_dead()
+	{ 
+		return this.num_of_dead;
 	}
 
 	
