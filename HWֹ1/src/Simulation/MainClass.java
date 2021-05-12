@@ -285,14 +285,20 @@ public class MainClass {
 				}
 			}
 		}
+		for(int i = 0; i< Map.getCurrentSize(); i++) {
+			for(int j = 0;j<map.getSettlement()[i].getListsick().size();j++) {
+				if(((Sick)map.getSettlement()[i].getListsick().get(j)).getVirus().tryToKill(((Sick)map.getSettlement()[i].getListsick().get(j)))){
+					map.getSettlement()[i].setnum_of_dead();
+					map.getSettlement()[i].getListsick().remove(j);
+				}
+			}
+			
+		}
 	
 				
 		
 	}
 		
-	
-	
-  
  }
 		
 
