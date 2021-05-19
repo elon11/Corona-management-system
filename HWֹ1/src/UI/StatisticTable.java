@@ -176,7 +176,7 @@ public class StatisticTable extends JPanel implements ActionListener
     			virus=new SouthAfricanVariant();
     		
     		double numContagion=settlement.getPopulation()*initialContagion;
-    		for (int i=0;i<numContagion&&settlement.getPopulation()<Settlement.getmax_people();i++)
+    		for (int i=0;i<numContagion&&settlement.getPopulation()<settlement.getmax_people();i++)
     		{
     			
     			int x=rand.nextInt(settlement.getListhealthy().size()-1);

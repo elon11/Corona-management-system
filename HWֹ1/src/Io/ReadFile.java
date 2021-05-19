@@ -17,11 +17,11 @@ import Population.Person;
 
 
 
-public class SimulationFile {
+public class ReadFile {
 	private String path;
 	
 	
-	public SimulationFile(String path)
+	public ReadFile(String path)
 	{
 		this.path= path;
 		System.out.println("end constructor of ReadFile with this.path: "+this.path);
@@ -111,7 +111,7 @@ public class SimulationFile {
 	  int vaccine_doses = 0;
 	  Settlement [] neighbors;
 	  int max = (int) ((int)num * 1.3);
-	  Settlement.setmax_people(max); 
+	  st.setmax_people(max); 
 	  
 	  if (tipe.equals("City")) 
 		    st = new City(name,location,RamzorColor.Green,null,null,max,vaccine_doses,null);   

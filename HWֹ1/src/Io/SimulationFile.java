@@ -122,7 +122,7 @@ public class SimulationFile {
 	  int vaccine_doses = 0;
 	  Settlement [] neighbors;
 	  int max = (int) ((int)num * 1.3);
-	  Settlement.setmax_people(max); 
+	  st.setmax_people(max); 
 	  
 	  //inserting into map
 	  
