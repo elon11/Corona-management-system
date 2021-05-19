@@ -158,44 +158,13 @@ public class MainClass {
 		    	System.out.println(p.toString());	
 		    }  
 		}
-		
-		//Step Simulation 
-		IVirus virus = null;
-		String descVirus;
-		Person p2 = null;
-		for(int i = 0; i< 5; i++) {//Performs 5 simulations
-			boolean flag = false;
-			for(int j = 0; j< Map.getCurrentSize(); j++) {// îòáøGoes through all the places on the map
-				int index = 0;
-				int y = 0;
-				for(int s = 0; s< map.getSettlement_by_insex(j).getListsick().size(); s++) {
-					for(int k = 0; k<6; k++) {// Trying to infect 6 people randomly
-						Random rand = new Random();
-						int x = rand.nextInt( map.getSettlement()[j].getListhealthy().size());
-						descVirus = map.getSettlement()[j].getListsick().get(index).toString();
-						if(descVirus.contains("ChineseVariant"))
-							virus = new ChineseVariant();
-						if(descVirus.contains("BritishVariant"))
-							virus = new BritishVariant();
-						if(descVirus.contains("SouthAfricanVariant"))
-							virus = new SouthAfricanVariant();
-						if(virus.tryToContagion(map.getSettlement()[j].getListsick().get(s),map.getSettlement()[j].getListhealthy().get(x))) {
-							 p2 = map.getSettlement()[j].getListhealthy().get(x).Contagion(virus);
-							 map.getSettlement()[j].getListhealthy().remove(x);
-							 map.getSettlement()[j].getListsick().add(p2);
-						}
-					}
-				}
-			}
-		}
-		Clock.nextTick();
 	}
 			
 	 
 	
 		
 	
-	public static void StartSimulation2(Map map) {
+	public static void StartSimulation2(Map map) throws IOException {
 		Settlement settlement ;
 		Sick p = null;
 		IVirus virus0 ,virus1 ,virus2;
@@ -247,6 +216,26 @@ public class MainClass {
 					}
 					
 				}
+			}
+		}
+		for(int i = 0; i< Map.getCurrentSize(); i++)
+		{
+			if( map.getSettlement()[i].getListsick().size() != 0)
+			{
+				for (int k = 0; k < map.getSettlement()[i].getListsick().size(); k++) {
+					Sick s = (Sick)map.getSettlement()[i].getListsick().get(k);
+					if(s != null)
+					{
+						if (s.tryToDie()) {
+							map.getSettlement()[i].getListsick().remove(s);
+							map.getSettlement()[i].setnum_of_dead();
+						}
+					}
+					
+				}	
+			}
+			if (map.getSettlement()[i].getnum_of_dead() >= map.getSettlement()[i].getPopulation() * 0.01 && StatisticsFile.path != null) {
+				StatisticsFile.writeLog(map.getSettlement()[i]);
 			}
 		}
 		Person b = null;

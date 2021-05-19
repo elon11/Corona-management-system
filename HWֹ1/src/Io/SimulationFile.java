@@ -122,16 +122,25 @@ public class SimulationFile {
 	  int vaccine_doses = 0;
 	  Settlement [] neighbors;
 	  int max = (int) ((int)num * 1.3);
-	  st.setmax_people(max); 
+	   
 	  
 	  //inserting into map
 	  
 	  if (tipe.equals("City")) 
-		    st = new City(name,location,RamzorColor.Green,null,null,max,vaccine_doses,null);   
+	  {
+		  st = new City(name,location,RamzorColor.Green,null,null,max,vaccine_doses,null);
+		  st.setmax_people(max);
+	  }
 	  if (tipe.equals("Moshav"))
-		    st = new Moshav(name,location,RamzorColor.Green,null,null,max,vaccine_doses,null);
+	  {
+		  st = new Moshav(name,location,RamzorColor.Green,null,null,max,vaccine_doses,null);
+		  st.setmax_people(max);
+	  }    
 	  if (tipe.equals("Kibbutz"))
-		    st = new Kibbutz(name,location,RamzorColor.Green,null,null,max,vaccine_doses,null);
+	  {
+		  st = new Kibbutz(name,location,RamzorColor.Green,null,null,max,vaccine_doses,null);  
+		  st.setmax_people(max);
+	  }
 	    Healthy h;
 		  for(int i=0;i<num;i++)
 		  {
