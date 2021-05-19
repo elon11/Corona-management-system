@@ -14,6 +14,7 @@ import java.io.IOException;
 import javax.swing.*;
 import Country.*;
 import Io.SimulationFile;
+import Io.StatisticsFile;
 import Simulation.*;
 import Virus.*;
 
@@ -170,7 +171,7 @@ import Virus.*;
 			JMenuItem bt_play = new JMenuItem("Play");
 			JMenuItem bt_pause = new JMenuItem("Pause");
 			JMenuItem bt_stop = new JMenuItem("Stop");
-			
+			JMenuItem bt_load_log = new JMenuItem("Load log file");
 			
 			
 			//load button
@@ -231,7 +232,13 @@ import Virus.*;
 				}
 			});
 
-			
+	    	bt_load_log.setSelected(true);
+	    	bt_load_log.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e)
+				{
+					StatisticsFile.loadFileFunc();
+				}
+			});
 	    	//Exit button
 			JMenuItem bt_exit = new JMenuItem("Exit");
 			bt_exit.addActionListener(new ActionListener(){
@@ -247,6 +254,8 @@ import Virus.*;
 			file.add(bt_statistics);
 			file.addSeparator();
 			file.add(bt_edit_mutations);
+			file.addSeparator();
+			file.add(bt_load_log);
 			file.addSeparator();
 			file.add(bt_exit);
 			menuBar.add(file);

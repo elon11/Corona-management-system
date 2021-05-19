@@ -5,14 +5,21 @@
  */
 package Io;
 
+import java.awt.FileDialog;
+import java.awt.Frame;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import Country.*;
 
 public class StatisticsFile   {
-	
+	public static String path=null;
+	public static FileHandler fh=null;
 	public static void writeCsv(Map map, File f) {
 
 	    try (PrintWriter writer = new PrintWriter(new File("test.csv"))) {
@@ -56,4 +63,35 @@ public class StatisticsFile   {
 	    }
 
 	  }
+	public static void writeLog(Settlement s) throws IOException
+	{
+		Logger logger = Logger.getLogger("");  
+	     
+
+	    try {  
+	        // This block configure the logger with handler and formatter  
+	        fh = new FileHandler(path); 
+	        logger.addHandler(fh);
+	        SimpleFormatter formatter = new SimpleFormatter();  
+	        fh.setFormatter(formatter);  
+	        // the following statement is used to log any messages  
+	        logger.info(s.getName()+" Number of sick: "+s.getListsick().size()+" Number of dead: "+s.getnum_of_dead()+"\n");
+	        fh.close();
+
+	    } catch (SecurityException e) {  
+	        e.printStackTrace();  
+	    }
+	}
+	public static void loadFileFunc() 
+	{
+		/**
+		 * load new file
+		 * @return file
+		 */
+        FileDialog fd = new FileDialog((Frame) null, "Please choose a file:", FileDialog.LOAD);
+        fd.setVisible(true);
+        if (fd.getFile() == null)
+            return ;
+        path=fd.getFile();
+	}
 }
