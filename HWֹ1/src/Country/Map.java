@@ -5,9 +5,13 @@
  */
 package Country;
 
+import java.util.concurrent.CyclicBarrier;
 
 public class Map {
 	private Settlement [] settlement;
+	public CyclicBarrier cyclic;
+	private boolean notStop;
+	private boolean isPaused;
 	private static int size =1;
 	private static int index =0;
 	
@@ -15,6 +19,8 @@ public class Map {
 	{
 		
 		settlement = new Settlement[size];
+		notStop = false;
+		isPaused = false;
 		System.out.println("end constructor of map with this.size: "+ Map.size); 
 	}
 	
@@ -46,6 +52,37 @@ public class Map {
 	{
 		Map.size =  size;
 	}
+	
+	
+	
+	
+	public void setnotStop(boolean x)
+	{
+		notStop = x;
+	}
+	public boolean getnotStop()
+	{
+		return notStop;
+	}
+	public void setisPaused(boolean x)
+	{
+		notStop = x;
+	}
+	public boolean getisPaused()
+	{
+		return isPaused;
+	}
+	
+	
+	
+	
+	public void spawn_all() {
+		for(int i = 0; i<Map.getsize();i++)
+			new Thread(this.getSettlement()[i]).start();
+	}
+	
+	
+	
 	
 	
 	/*
