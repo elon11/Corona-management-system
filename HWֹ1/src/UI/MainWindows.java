@@ -11,6 +11,8 @@ import java.awt.Graphics;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.CyclicBarrier;
+
 import javax.swing.*;
 import Country.*;
 import Io.SimulationFile;
@@ -187,6 +189,7 @@ import Virus.*;
 					bt_play.setEnabled(true);
 					bt_statistics.setEnabled(true);
 					
+					
 					File file=MainClass.loadFileFunc();
 					
 					SimulationFile simulationFile=new SimulationFile(file);
@@ -194,14 +197,32 @@ import Virus.*;
 						
 						
 						map=simulationFile.FillCountryFromFile();
+						for(int i = 0; i<map.getSettlement().length-1;i++) {
+							map.getSettlement()[i].set_map(map);
+						}
 						
 						map_panel.set_map(map);
-					}
-					catch (Exception e1) {
+						map.cyclic = new CyclicBarrier(map.getSettlement().length-1, new Runnable() {
+							public void run() {
+								
+								Clock.nextTick();
+								updateAll();
+								try {
+									Thread.sleep(sleep_time);
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								
+							}
+						});
+					
+					}catch (Exception e1) {
 						 
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+					
 
 				}
 			});
@@ -269,13 +290,15 @@ import Virus.*;
 			bt_play.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) 
 				{
+					map.setisPaused(false);
 					bt_play.setEnabled(false);
 					bt_pause.setEnabled(true);
 					bt_stop.setEnabled(true);
 					MainClass.setPlay(true);
 					MainClass.setPause(false);
 					MainClass.setStop(false);
-
+					map.notifyAll();
+					
 				}
 			});
 			
@@ -288,6 +311,7 @@ import Virus.*;
 					bt_pause.setEnabled(false);
 					bt_play.setEnabled(true);
 					bt_stop.setEnabled(true);
+					map.setisPaused(true);
 					MainClass.setPlay(false);
 					MainClass.setPause(true);
 					MainClass.setStop(false);
@@ -300,6 +324,8 @@ import Virus.*;
 			bt_stop.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) 
 				{
+					map.setisPaused(false);
+					map.setnotStop(false);
 					bt_play.setEnabled(false);
 					bt_pause.setEnabled(false);
 					bt_stop.setEnabled(false);
