@@ -30,7 +30,7 @@ public class StatisticTable extends JPanel implements ActionListener
 		THREE("Ramzor color", 3),
 		FOUR("Sick Percentages", 4),
 		FIVE("Vaccine doses", 5),
-		SIX("location", 6);
+		SIX("dead", 6);
 		
 		
 	    private final int col; 
@@ -65,7 +65,7 @@ public class StatisticTable extends JPanel implements ActionListener
     	
     	private static final double initialContagion = 0.01;
         private Settlement[] data;
-        private final String[] columnNames = {"Settlement Name","Settlement Type","Population","Ramzor color","Sick Percentages","Vaccine doses","location"};   ;
+        private final String[] columnNames = {"Settlement Name","Settlement Type","Population","Ramzor color","Sick Percentages","Vaccine doses","dead"};   ;
 
         
         public StatisticModel(Settlement[] data) 
@@ -106,7 +106,7 @@ public class StatisticTable extends JPanel implements ActionListener
         	 * @param columnIndex - col index
         	 * return the value at the cell 
         	 */
-        	Settlement settlement =(data[rowIndex]);
+        	Settlement settlement = data[rowIndex];
             switch (columnIndex) {
                 case 0: return settlement.getName();
                 case 1:
@@ -121,7 +121,7 @@ public class StatisticTable extends JPanel implements ActionListener
                 case 3: return settlement.getColor();
                 case 4: return settlement.ContagiousPercent()*100+"%";
                 case 5: return settlement.getvaccine_doses();
-                case 6: return settlement.getlocation();
+                case 6: return settlement.getnum_of_dead();
             }
             return null;
         }
@@ -347,6 +347,7 @@ public class StatisticTable extends JPanel implements ActionListener
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	
 
 }
