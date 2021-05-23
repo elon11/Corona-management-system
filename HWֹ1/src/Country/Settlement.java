@@ -129,9 +129,9 @@ public abstract class Settlement implements Runnable{
 	{ 
 		return this.vaccine_doses;
 	}
-	public void setvaccine_doses(int vaccine_doses )
+	public synchronized void setvaccine_doses(int vaccine_doses )
 	{ 
-		this.vaccine_doses = vaccine_doses;
+		this.vaccine_doses += vaccine_doses;
 	}
 	public int getPopulation()
 	{ 
