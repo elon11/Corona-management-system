@@ -5,56 +5,33 @@
  */
 package Country;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.CyclicBarrier;
 
 public class Map implements Iterable<Settlement>{
-	private Settlement [] settlement;
+	private static List<Settlement> settlement;
 	public CyclicBarrier cyclic;
 	private boolean notStop;
 	private boolean isPaused;
-	private static int size =1;
-	private static int index =0;
 	
 	public  Map ()
 	{
-		
-		settlement = new Settlement[size];
+		settlement = new ArrayList<>();
 		notStop = false;
 		isPaused = false;
 	}
 	
-	public Settlement[] getSettlement()
-	{
-		return settlement;
-	}
-	
-	public Settlement getSettlement_by_insex(int x)
-	{
-		return settlement[x];
-	}
-	
-	public void setSettlement(Settlement [] settlement)
-	{
-		this.settlement =  settlement;
-	}
-	
 	public static int getsize()
 	{
-		return size;
-	}
-	public static int getCurrentSize()
-	{
-		return index;
-	}	
-	
-	public void setsize(int size)
-	{
-		Map.size =  size;
+		return settlement.size();
 	}
 	
-	
+	public Settlement at(int index) {
+		return settlement.get(index);
+	}
 	
 	
 	public void setnotStop(boolean x)
@@ -90,7 +67,7 @@ public class Map implements Iterable<Settlement>{
 	@Override
 	public Iterator<Settlement> iterator() {
 		// TODO Auto-generated method stub
-		return Arrays.stream(this.getSettlement()).iterator();
+		return settlement.iterator();
 	}
 	
 	
@@ -100,23 +77,12 @@ public class Map implements Iterable<Settlement>{
 	
 	public void AddSettlements(Settlement st)
 	{
-		
-		settlement[index]=st;
-		index++;
-		//checking if the map is full mult the size of it and copy elements
-		if(index == size) 
-		{
-			size = size + 1;
-			Settlement [] settlementTemp = new Settlement[size];
-			for(int i=0;i<settlement.length;i++)
-			{
-				settlementTemp[i]= settlement[i];
-			}
-			
-			settlement= settlementTemp;
-			
-			
-		}
+		settlement.add(st);
+	}
+
+	public Settlement[] getSettlement() {
+		// TODO Auto-generated method stub
+		return settlement.toArray(new Settlement[0]);
 	}
 	
 }

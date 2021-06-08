@@ -315,7 +315,7 @@ public abstract class Settlement implements Runnable{
 		Sick p = null;
 		IVirus virus0 ,virus1 ,virus2;
 		int num , chek;
-        for (int i = 0; i<Map.getCurrentSize();i++) {
+        for (int i = 0; i<Map.getsize();i++) {
         	
 		    
 			num = this.getListhealthy().size();
