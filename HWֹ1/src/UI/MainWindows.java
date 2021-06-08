@@ -12,6 +12,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.CyclicBarrier;
+import java.util.logging.FileHandler;
 
 import javax.swing.*;
 import javax.swing.table.TableModel;
@@ -124,18 +125,21 @@ import Virus.*;
 					Iterator<Settlement> iterator=map.iterator();
 					while(iterator.hasNext()) 
 					{
-						Settlement setl=iterator.next(); 
-						int x=setl.getlocation().GetPoint().GetX();
-						int y=setl.getlocation().GetPoint().GetY();
-						int h=setl.getlocation().GetSize().Getheight();
-						int w_settl=setl.getlocation().GetSize().Getwidth();
-						
-						if(x<=e.getPoint().getX() && e.getPoint().getX()<=x+w_settl && y<=e.getPoint().getY() && e.getPoint().getY()<=y+h)
+						Settlement setl=iterator.next();
+						if(setl!=null)
 						{
-							System.out.println(setl.getName());
-							StatisticWindow statistic_d =  statistic_Window(map,setl.getName());
-							statistic_d.setVisible(true);
-							break;
+							int x=setl.getlocation().GetPoint().GetX();
+							int y=setl.getlocation().GetPoint().GetY();
+							int h=setl.getlocation().GetSize().Getheight();
+							int w_settl=setl.getlocation().GetSize().Getwidth();
+							
+							if(x<=e.getPoint().getX() && e.getPoint().getX()<=x+w_settl && y<=e.getPoint().getY() && e.getPoint().getY()<=y+h)
+							{
+								System.out.println(setl.getName());
+								StatisticWindow statistic_d =  statistic_Window(map,setl.getName());
+								statistic_d.setVisible(true);
+								break;
+							}
 						}
 					}
 				}
@@ -200,15 +204,19 @@ import Virus.*;
 						
 						map=simulationFile.FillCountryFromFile();
 						Iterator<Settlement> iterator=map.iterator();
-						while(iterator.hasNext()&& iterator.next()!=null) 
+						while(iterator.hasNext()) 
 						{
 							Settlement setl=iterator.next();
-							setl.set_map(map);
+							if(setl!=null)
+							{
+								setl.set_map(map);
+							}
+							
 						}
 						
 						map_panel.set_map(map);
 	
-						map.cyclic = new CyclicBarrier(map.getSettlement().length-1, new Runnable() {
+						map.cyclic = new CyclicBarrier(map.getsize(), new Runnable() {
 							public void run() {
 								
 								Clock.nextTick();
@@ -264,6 +272,8 @@ import Virus.*;
 	    	bt_load_log.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e)
 				{
+					if(StatisticsFile.index>0)
+						StatisticsFile.fh.close();
 					StatisticsFile.loadFileFunc();
 				}
 			});
@@ -272,7 +282,22 @@ import Virus.*;
 	    	bt_back_log.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent e)
 				{
-					//StatisticsFile.loadFileFunc();
+					if(StatisticsFile.index>0)
+					{
+						StatisticsFile.fh.close();
+						StatisticsFile.index--;
+						StatisticsFile.memento=StatisticsFile.caretaker.getMemento(StatisticsFile.index);
+						StatisticsFile.originator.setMemento(StatisticsFile.memento);
+						try {
+							StatisticsFile.fh=new FileHandler(StatisticsFile.originator.getState());
+						} catch (SecurityException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
 				}
 			});
 	    	
@@ -320,8 +345,9 @@ import Virus.*;
 					MainClass.setPlay(true);
 					MainClass.setPause(false);
 					MainClass.setStop(false);
-					map.notifyAll();
-					
+					synchronized (map) {
+						map.notifyAll();
+					}
 				}
 			});
 			
