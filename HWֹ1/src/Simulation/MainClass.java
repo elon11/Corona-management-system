@@ -28,10 +28,12 @@ import Country.*;
 
 public class MainClass {
 	
-	private static boolean ifFirstSim = false;
+
 	private static boolean play = false;
 	private static boolean pause = false;
 	private static boolean stop = false;
+	
+
 	private static FileWriter outputFile;
 	public static Map map;
 	
