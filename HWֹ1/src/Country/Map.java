@@ -23,7 +23,6 @@ public class Map implements Iterable<Settlement>{
 		settlement = new Settlement[size];
 		notStop = false;
 		isPaused = false;
-		System.out.println("end constructor of map with this.size: "+ Map.size); 
 	}
 	
 	public Settlement[] getSettlement()
@@ -82,8 +81,9 @@ public class Map implements Iterable<Settlement>{
 	 */
 	public void spawn_all() {
 		Iterator<Settlement> iterator=this.iterator();
-		while(iterator.hasNext()&& iterator.next()!=null)
+		while(iterator.hasNext())
 			new Thread(iterator.next()).start();
+		
 	}
 	
 	
@@ -117,7 +117,6 @@ public class Map implements Iterable<Settlement>{
 			
 			
 		}
-		System.out.println("*****"+settlement.length);
 	}
 	
 }
