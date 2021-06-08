@@ -5,9 +5,11 @@
  */
 package Country;
 
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.concurrent.CyclicBarrier;
 
-public class Map {
+public class Map implements Iterable<Settlement>{
 	private Settlement [] settlement;
 	public CyclicBarrier cyclic;
 	private boolean notStop;
@@ -75,14 +77,21 @@ public class Map {
 	
 	
 	
-	
+	/*
+	 * The method activates the threads
+	 */
 	public void spawn_all() {
-		for(int i = 0; i<Map.getsize();i++)
-			new Thread(this.getSettlement()[i]).start();
+		Iterator<Settlement> iterator=this.iterator();
+		while(iterator.hasNext()&& iterator.next()!=null)
+			new Thread(iterator.next()).start();
 	}
 	
 	
-	
+	@Override
+	public Iterator<Settlement> iterator() {
+		// TODO Auto-generated method stub
+		return Arrays.stream(this.getSettlement()).iterator();
+	}
 	
 	
 	/*
@@ -111,7 +120,4 @@ public class Map {
 		System.out.println("*****"+settlement.length);
 	}
 	
-	
-	
-
 }

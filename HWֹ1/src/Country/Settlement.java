@@ -64,10 +64,9 @@ public abstract class Settlement implements Runnable{
 		this.max_people = s.getmax_people();
 		this.vaccine_doses = s.getvaccine_doses();
 		
-		//sizeN = 20;
-		//currentN = 0;
+		
 		this.neighbors = s.getneighbors();
-		//this.neighbors = new Settlement[sizeN];
+		
 	}
 	
 	
@@ -307,6 +306,9 @@ public abstract class Settlement implements Runnable{
 		}
 	}
 
+	/*
+	 * The method performs the first simulation of infecting people
+	 */
 	public void simulation1() {
 		
 		List<Person> listp = new ArrayList<Person>();
@@ -339,27 +341,29 @@ public abstract class Settlement implements Runnable{
 	}
 	
 	public void Simulation2(Map map) throws IOException {
-		//להדביק
+		//to contagion
 		this.contagion();
 		
-		//להבריא
+		//to recover
 		this.recover();
 		
-		//להעביר
+		//to ytansfer
 	    this.tryTotransfer();
 	    this.setColor(this.CalculateRamzorGrade());
 		
-	    //לחסן
+	    //to vaccine
 		this.inoculate();
 			
-	    //להרוג
+	    //to kill
 		this.Kill();
 			
 		     
 	}
 	
 	
-	
+	/*
+	 * The method infects people in the simulation
+	 */
 	private synchronized void contagion() {
 		Sick p = null;
 		IVirus virus0 ,virus1 ,virus2;
@@ -385,6 +389,9 @@ public abstract class Settlement implements Runnable{
 	    }  
 	}
 	
+	/*
+	 * The method stores people in the simulation
+	 */
 	private synchronized void inoculate() {
 		Person b2 = null;
 	    if(this.getvaccine_doses()>0) {
@@ -397,6 +404,9 @@ public abstract class Settlement implements Runnable{
 		}
 	}
 	
+	/*
+	 * The method kills people in the simulation
+	 */
 	private synchronized void Kill() throws IOException {
 		if( this.getListsick().size() != 0)
 		{
@@ -417,6 +427,10 @@ public abstract class Settlement implements Runnable{
 		}
 	}
 	
+	
+	/*
+	 * The method makes sick people healthy in the simulation
+	 */
 	private synchronized void recover() {
 		Person b = null;
 		// make sick to Convalescent
@@ -434,7 +448,9 @@ public abstract class Settlement implements Runnable{
 	
 	
 	
-	
+	/*
+	 * The method returns a random person
+	 */
 	private synchronized Person GetPerson() {
 		/**
 		 * @return a random person from the settlment 
@@ -449,11 +465,12 @@ public abstract class Settlement implements Runnable{
 		return population.get(people); 
 	}
 	
+	/*
+	 * The method tries to move a random person from one place to another
+	 */
 	private void tryTotransfer() 
 	{
-		/**
-		 * try to transfer person to another settlment
-		 */
+		
 		Random rand = new Random();
 		Person p=null;
 		Object o1,o2; 
