@@ -93,5 +93,14 @@ public class StatisticsFile   {
         if (fd.getFile() == null)
             return ;
         path=fd.getFile();
+        Originator.setState(path);
+        memento = Originator.createMemento();
+        caretaker.addMemento(memento);
+        index++;
+        try {
+        	fh = new FileHandler(path);
+        }catch (SecurityException | IOException e) {
+        	e.printStackTrace();
+        }
 	}
 }

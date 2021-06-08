@@ -134,7 +134,7 @@ public class ReadFile {
 	  }
 	  //inserting into map
 	  st.setListhealthy(listhealthy);
-	  System.out.println("tipe: "+ tipe +", "+ st.toString());
+	  //System.out.println("tipe: "+ tipe +", "+ st.toString());
 	  map.AddSettlements(st);	
 	}
      
