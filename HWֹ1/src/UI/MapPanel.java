@@ -14,6 +14,7 @@ import java.awt.RenderingHints;
 
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
+import java.util.Iterator;
 
 import Country.Map;
 import Country.Settlement;
@@ -41,52 +42,58 @@ public class MapPanel extends JPanel {
 
 		
 		
-		for (int i = 0; i < map.getSettlement().length-1; i++) {
+		Iterator<Settlement> iterator=map.iterator();
+		while(iterator.hasNext()&& iterator.next()!=null) 
+		{
+			Settlement setl=iterator.next();
 			g.setColor(Color.BLACK);
-			//for (int j = 0; j < map.getSettlement()[i].getneighbors().length; j++) {
-			for (int j = 0; j < map.getSettlement()[i].getNumN(); j++) {
-				int center_x1 = findCenterX(i);
-				int center_y1 = findCenterY(i);
-				int center_x2 = map.getSettlement()[i].getneighbors()[j].getlocation().GetPoint().GetX()
-						+ map.getSettlement()[i].getneighbors()[j].getlocation().GetSize().Getwidth() / 2;
-				int center_y2 = map.getSettlement()[i].getneighbors()[j].getlocation().GetPoint().GetY()
-						+ map.getSettlement()[i].getneighbors()[j].getlocation().GetSize().Getheight() / 2;
+			for (int j = 0; j < setl.getNumN(); j++) {
+				int center_x1 = findCenterX(setl);
+				int center_y1 = findCenterY(setl);
+				int center_x2 = setl.getneighbors()[j].getlocation().GetPoint().GetX()
+						+ setl.getneighbors()[j].getlocation().GetSize().Getwidth() / 2;
+				int center_y2 = setl.getneighbors()[j].getlocation().GetPoint().GetY()
+						+ setl.getneighbors()[j].getlocation().GetSize().Getheight() / 2;
+				NeighborDecorator n=new NeighborDecorator(setl,setl.getneighbors()[j]);
+				n.SetColor(g);
 				g.drawLine((int)(center_x1*dimension_x), (int)(center_y1*dimension_y), (int)(center_x2*dimension_x),(int) (center_y2*dimension_y));			
 			}
 		}
-		for (int i = 0; i < map.getSettlement().length-1; i++) {
+		iterator=map.iterator();
+		while(iterator.hasNext()&& iterator.next()!=null) 
+		{
+			Settlement setl=iterator.next();
 			g.setColor(Color.BLACK);
-			int x=map.getSettlement()[i].getlocation().GetPoint().GetX();
-			int y=map.getSettlement()[i].getlocation().GetPoint().GetY();
-			int height=map.getSettlement()[i].getlocation().GetSize().Getheight();
-			int width=map.getSettlement()[i].getlocation().GetSize().Getwidth();
+			int x=setl.getlocation().GetPoint().GetX();
+			int y=setl.getlocation().GetPoint().GetY();
+			int height=setl.getlocation().GetSize().Getheight();
+			int width=setl.getlocation().GetSize().Getwidth();
 			g.drawRect((int)(x*dimension_x),(int)(y*dimension_y),(int)(width*dimension_x),(int)(height*dimension_y));
-			g.setColor(map.getSettlement()[i].getColor().getcolor());
+			g.setColor(setl.getColor().getcolor());
 			g.fillRect((int)(x*dimension_x),(int)(y*dimension_y),(int)(width*dimension_x),(int)(height*dimension_y));
 			g.setColor(Color.BLACK);
-			g.drawString(map.getSettlement()[i].getName(),(int)(x*dimension_x),(int)((y+15)*dimension_y));
+			g.drawString(setl.getName(),(int)(x*dimension_x),(int)((y+15)*dimension_y));
 			g.setFont(new Font("TimesRoman", Font.PLAIN,(int) (14*dimension_x))); 
 		}
 	}
-		
 	
 	
-	public int findCenterY(int y)
+	public int findCenterY(Settlement s)
 	{
 		/**
 		 * @param y index of the settlement
 		 * @return the y center cordinate of the settlement
 		 */
-		return map.getSettlement()[y].getlocation().GetPoint().GetY()+map.getSettlement()[y].getlocation().GetSize().Getheight()/2;
+		return s.getlocation().GetPoint().GetY()+s.getlocation().GetSize().Getheight()/2;
 	}
 	
-	public int findCenterX(int x)
+	public int findCenterX(Settlement s)
 	{
 		/**
 		 * @param x index of the settlement
 		 * @return the x center cordinate of the settlement
 		 */
-		return map.getSettlement()[x].getlocation().GetPoint().GetX()+map.getSettlement()[x].getlocation().GetSize().Getheight()/2;
+		return s.getlocation().GetPoint().GetX()+s.getlocation().GetSize().Getheight()/2;
 	}
 	
 	@Override
@@ -100,15 +107,19 @@ public class MapPanel extends JPanel {
 		 * @param map the map
 		 */
 		this.map = map;
-		
+		Iterator<Settlement> iterator=map.iterator();
+		iterator=map.iterator();
 		max_x = max_y = 0;
 		if (map != null)
-			for (int i = 0; i < map.getSettlement().length -1; i++) {
-				if (map.getSettlement()[i].getlocation().GetPoint().GetX()+map.getSettlement()[i].getlocation().GetSize().Getwidth() > max_x) {
-					max_x = map.getSettlement()[i].getlocation().GetPoint().GetX()+map.getSettlement()[i].getlocation().GetSize().Getwidth();
+			
+			while(iterator.hasNext()&& iterator.next()!=null) 
+			{
+			    Settlement setl=iterator.next();
+				if (setl.getlocation().GetPoint().GetX()+setl.getlocation().GetSize().Getwidth() > max_x) {
+					max_x = setl.getlocation().GetPoint().GetX()+setl.getlocation().GetSize().Getwidth();
 				}
-				if (map.getSettlement()[i].getlocation().GetPoint().GetY()+map.getSettlement()[i].getlocation().GetSize().Getheight() > max_y) {
-					max_y = map.getSettlement()[i].getlocation().GetPoint().GetY()+map.getSettlement()[i].getlocation().GetSize().Getheight();
+				if (setl.getlocation().GetPoint().GetY()+setl.getlocation().GetSize().Getheight() > max_y) {
+					max_y = setl.getlocation().GetPoint().GetY()+setl.getlocation().GetSize().Getheight();
 				}
 			}
 		max_x += 10;

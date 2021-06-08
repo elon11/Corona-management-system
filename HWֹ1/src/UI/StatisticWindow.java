@@ -47,7 +47,7 @@ public class StatisticWindow extends JDialog
     	
     	Settlement[] settlements = map.getSettlement();
     	tableModel = new StatisticTable(settlements,row_name);
-        
+    
         
        
         

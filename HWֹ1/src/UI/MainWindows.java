@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.util.concurrent.CyclicBarrier;
 
 import javax.swing.*;
+import javax.swing.table.TableModel;
+import java.util.Iterator;
 import Country.*;
 import Io.SimulationFile;
 import Io.StatisticsFile;
@@ -119,22 +121,22 @@ import Virus.*;
 				@Override
 				public void mouseClicked(MouseEvent e) 
 				{
-					for(int i=0;i<map.getSettlement().length-1;i++)
+					Iterator<Settlement> iterator=map.iterator();
+					while(iterator.hasNext()) 
 					{
-
-						int x=map.getSettlement()[i].getlocation().GetPoint().GetX();
-						int y=map.getSettlement()[i].getlocation().GetPoint().GetY();
-						int h=map.getSettlement()[i].getlocation().GetSize().Getheight();
-						int w_settl=map.getSettlement()[i].getlocation().GetSize().Getwidth();
+						Settlement setl=iterator.next(); 
+						int x=setl.getlocation().GetPoint().GetX();
+						int y=setl.getlocation().GetPoint().GetY();
+						int h=setl.getlocation().GetSize().Getheight();
+						int w_settl=setl.getlocation().GetSize().Getwidth();
 						
 						if(x<=e.getPoint().getX() && e.getPoint().getX()<=x+w_settl && y<=e.getPoint().getY() && e.getPoint().getY()<=y+h)
 						{
-							System.out.println(map.getSettlement()[i].getName());
-							StatisticWindow statistic_d =  statistic_Window(map,map.getSettlement()[i].getName());
+							System.out.println(setl.getName());
+							StatisticWindow statistic_d =  statistic_Window(map,setl.getName());
 							statistic_d.setVisible(true);
 							break;
 						}
-						
 					}
 				}
 			});
@@ -174,7 +176,7 @@ import Virus.*;
 			JMenuItem bt_pause = new JMenuItem("Pause");
 			JMenuItem bt_stop = new JMenuItem("Stop");
 			JMenuItem bt_load_log = new JMenuItem("Load log file");
-			
+			JMenuItem bt_back_log = new JMenuItem("back log file");
 			
 			//load button
 			bt_load.setEnabled(true);
@@ -197,11 +199,15 @@ import Virus.*;
 						
 						
 						map=simulationFile.FillCountryFromFile();
-						for(int i = 0; i<map.getSettlement().length-1;i++) {
-							map.getSettlement()[i].set_map(map);
+						Iterator<Settlement> iterator=map.iterator();
+						while(iterator.hasNext()&& iterator.next()!=null) 
+						{
+							Settlement setl=iterator.next();
+							setl.set_map(map);
 						}
 						
 						map_panel.set_map(map);
+	
 						map.cyclic = new CyclicBarrier(map.getSettlement().length-1, new Runnable() {
 							public void run() {
 								
@@ -236,6 +242,7 @@ import Virus.*;
 				{
 					StatisticWindow statistic_d=statistic_Window(map," ");
 					statistic_d.setVisible(true);
+					
 
 				}
 			});
@@ -260,6 +267,20 @@ import Virus.*;
 					StatisticsFile.loadFileFunc();
 				}
 			});
+	    	
+	    	bt_back_log.setSelected(true);
+	    	bt_back_log.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent e)
+				{
+					//StatisticsFile.loadFileFunc();
+				}
+			});
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	
 	    	//Exit button
 			JMenuItem bt_exit = new JMenuItem("Exit");
 			bt_exit.addActionListener(new ActionListener(){
@@ -277,6 +298,8 @@ import Virus.*;
 			file.add(bt_edit_mutations);
 			file.addSeparator();
 			file.add(bt_load_log);
+			file.addSeparator();
+			file.add(bt_back_log);
 			file.addSeparator();
 			file.add(bt_exit);
 			menuBar.add(file);

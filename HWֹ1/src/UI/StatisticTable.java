@@ -100,6 +100,7 @@ public class StatisticTable extends JPanel implements ActionListener
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) 
         {
+        	
         	/**
         	 * get the value at cell by row and col index
         	 * @param rowIndex - row index
