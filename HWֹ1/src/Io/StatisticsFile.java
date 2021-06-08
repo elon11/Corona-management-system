@@ -41,23 +41,23 @@ public class StatisticsFile   {
 	      sb.append("Number of vaccine doses ");
 	      sb.append(',');
 	      sb.append('\n');
-	      for(int i=0; i<map.getSettlement().length-1;i++) {
-	         sb.append(map.getSettlement()[i].getName());
+	      for(int i=0; i<map.getsize();i++) {
+	         sb.append(map.at(i).getName());
 	         sb.append(',');
-	       	 if(map.getSettlement()[i] instanceof City ) {
+	       	 if(map.at(i) instanceof City ) {
 	    	   sb.append("City ");}
-	       	 else if(map.getSettlement()[i] instanceof Kibbutz) {
+	       	 else if(map.at(i) instanceof Kibbutz) {
 	       		   sb.append("Kibbutz ");}
 	       	 else 
 	       		 sb.append("Moshav ");
 	       	 sb.append(',');
-	       	 sb.append(map.getSettlement()[i].getPopulation());
+	       	 sb.append(map.at(i).getPopulation());
 	       	 sb.append(',');
-	         sb.append(map.getSettlement()[i].getColor());
+	         sb.append(map.at(i).getColor());
 	    	 sb.append(',');
-	      	 sb.append(map.getSettlement()[i].getListsick().size()/map.getSettlement()[i].getPopulation()*100+"%");
+	      	 sb.append(map.at(i).getListsick().size()/map.at(i).getPopulation()*100+"%");
 	       	 sb.append(',');
-	       	 sb.append(map.getSettlement()[i].getvaccine_doses());
+	       	 sb.append(map.at(i).getvaccine_doses());
 	         sb.append('\n');
 	      }
 	      writer.write(sb.toString());

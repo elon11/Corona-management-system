@@ -140,6 +140,7 @@ public class SimulationFile {
 		  }
 		  st.setListhealthy(listhealthy);
 		  st.setListsick(listsick);
+		  assert st != null;
 		  map.AddSettlements(st);
 	  
 	  
@@ -173,26 +174,21 @@ public class SimulationFile {
 		  name_second = (data.substring(0, indexEnd)).trim();
 		
 		  
-		 int indexS1=-1,indexS2=-1;
-	      for( int j = 0; j< Map.getCurrentSize(); j++) {
-				nameS = map.getSettlement()[j].getName();
-				if(nameS.equals(name_first))
-				{
-					
-					indexS1= j;
-					
-				}
-				if(nameS.equals(name_second))
-				{
-					
-					indexS2 =j;
-				}
-	      }
+		 int indexS1=-1,indexS2=-1,j=0;
+		 for (Settlement st : map) {
+			 if (name_first.equals(st.getName())) {
+				 indexS1= j;
+			 }
+			 if (name_second.equals(st.getName())) {
+				 indexS2= j;
+			 }
+			 j++;
+		 }
 				
 	      if(indexS1 != -1 &&indexS2!=-1)
 	      {
-	    	  map.getSettlement()[indexS1].AddNeighbors(map.getSettlement()[indexS2]);
-	    	  map.getSettlement()[indexS2].AddNeighbors(map.getSettlement()[indexS1]);
+	    	  map.at(indexS1).AddNeighbors(map.at(indexS2));
+	    	  map.at(indexS2).AddNeighbors(map.at(indexS1));
 	      }
 	      
 		}    
