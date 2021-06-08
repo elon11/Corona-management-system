@@ -30,7 +30,6 @@ public class SimulationFile {
 	
   
 	public Map FillCountryFromFile() {
-	  System.out.println("start FillCountryFromFile"); 
 	  map = new Map();
 	  String firstTav;
 	  
@@ -45,7 +44,6 @@ public class SimulationFile {
 	      {
 	        
 	    	data = myReader.nextLine();
-	    	System.out.println("data: "+ data); 
 	    	firstTav = data.substring(0,1);
 	    	if(!firstTav.equals("#")) 
 	    		InsertCityToMap(map,data);
@@ -126,21 +124,8 @@ public class SimulationFile {
 	  
 	  //inserting into map
 	  
-	  if (tipe.equals("City")) 
-	  {
-		  st = new City(name,location,RamzorColor.Green,null,null,max,vaccine_doses,null);
-		  st.setmax_people(max);
-	  }
-	  if (tipe.equals("Moshav"))
-	  {
-		  st = new Moshav(name,location,RamzorColor.Green,null,null,max,vaccine_doses,null);
-		  st.setmax_people(max);
-	  }    
-	  if (tipe.equals("Kibbutz"))
-	  {
-		  st = new Kibbutz(name,location,RamzorColor.Green,null,null,max,vaccine_doses,null);  
-		  st.setmax_people(max);
-	  }
+	  FactorySettlement fs=new FactorySettlement();
+	  st=fs.makeInsttance(tipe, name, location, num, max);
 	    Healthy h;
 		  for(int i=0;i<num;i++)
 		  {
@@ -155,9 +140,7 @@ public class SimulationFile {
 		  }
 		  st.setListhealthy(listhealthy);
 		  st.setListsick(listsick);
-	
-	  System.out.println("tipe: "+ tipe +", "+ st.toString());
-	  map.AddSettlements(st);
+		  map.AddSettlements(st);
 	  
 	  
 	}

@@ -24,12 +24,10 @@ public class ReadFile {
 	public ReadFile(String path)
 	{
 		this.path= path;
-		System.out.println("end constructor of ReadFile with this.path: "+this.path);
 	}
 	
   
 	public void FillCountryFromFile(Map map) {
-	  System.out.println("start FillCountryFromFile");  
     try 
     {
       File myObj = new File(this.path);
@@ -39,8 +37,7 @@ public class ReadFile {
       String data ;
       while (myReader.hasNext()) 
       {
-    	data = myReader.nextLine();
-    	System.out.println("data: "+ data); 
+    	data = myReader.nextLine(); 
     	InsertCityToMap(map,data);   
       }
       myReader.close();
@@ -134,8 +131,6 @@ public class ReadFile {
 	  }
 	  //inserting into map
 	  st.setListhealthy(listhealthy);
-	  //System.out.println("tipe: "+ tipe +", "+ st.toString());
-	  map.AddSettlements(st);	
 	}
      
 }

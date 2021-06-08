@@ -3,8 +3,8 @@ package Io;
 public class Originator {
 	private String state; 
 	
-	public static  void setState(String state) { 
-		state = state;
+	public void setState(String state) { 
+		this.state = state;
 	} 
 	
 	public String getState() {

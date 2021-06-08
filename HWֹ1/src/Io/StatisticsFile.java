@@ -20,6 +20,10 @@ import Country.*;
 public class StatisticsFile   {
 	public static String path=null;
 	public static FileHandler fh=null;
+	public static Originator originator=new Originator();
+	public static Memento memento;
+	public static Caretaker caretaker=new Caretaker();
+	public static int index=-1;
 	public static void writeCsv(Map map, File f) {
 
 	    try (PrintWriter writer = new PrintWriter(new File("test.csv"))) {
@@ -93,8 +97,8 @@ public class StatisticsFile   {
         if (fd.getFile() == null)
             return ;
         path=fd.getFile();
-        Originator.setState(path);
-        memento = Originator.createMemento();
+        originator.setState(path);
+        memento = originator.createMemento();
         caretaker.addMemento(memento);
         index++;
         try {
