@@ -59,7 +59,7 @@ public class Map implements Iterable<Settlement>{
 	public void spawn_all() {
 		Iterator<Settlement> iterator=this.iterator();
 		while(iterator.hasNext())
-			new Thread(iterator.next()).start();
+			  new Thread(iterator.next()).start();
 		
 	}
 	
